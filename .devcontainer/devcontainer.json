@@ -1,0 +1,38 @@
+{
+    "name": "ROS 2 Development Container",
+    "privileged": true,
+    "remoteUser": "ros2",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "containerEnv": {
+        "DISPLAY": "unix:0",
+        "ROS_AUTOMATIC_DISCOVERY_RANGE": "LOCALHOST",
+        "ROS_DOMAIN_ID": "42"
+    },
+    "runArgs": [
+        "--net=host",
+        "--pid=host",
+        "--ipc=host",
+        "-e", "DISPLAY=${env:DISPLAY}"
+    ],
+    "onCreateCommand": "mkdir -p /home/ros2/.devcontainer",
+    "workspaceFolder": "/home/ros2/.devcontainer",
+    "workspaceMount": "source=${localWorkspaceFolder},target=/home/ros2/.devcontainer,type=bind,consistency=cached",
+    "mounts": [
+       "source=${localWorkspaceFolder}/src,target=/home/ros2/ws/src/ros_tutorial/src,type=bind,consistency=cached",
+       "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind,consistency=cached",
+       "source=/dev/dri,target=/dev/dri,type=bind,consistency=cached"
+    ],
+    "postCreateCommand": "sudo chown -R ros2:ros2 /home/ros2/ws && ln -s /home/ros2/ws/build/behaviortree_ros2/bt_executor_parameters/include/bt_executor_parameters.hpp /home/ros2/ws/src/btcpp/behaviortree_ros2/include/behaviortree_ros2",
+    "customizations": {
+        "vscode": {
+            "extensions":[
+                "ms-vscode.cpptools",
+                "ms-vscode.cpptools-themes",
+                "ms-vscode.cmake-tools",
+                "spencerwmiles.vscode-task-buttons"
+            ]
+        }
+    },
+}
